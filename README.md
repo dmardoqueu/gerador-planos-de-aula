@@ -112,6 +112,12 @@ Configure as seguintes variáveis no Supabase Functions:
 
 ---
 
+## 🌐 URLs e Acesso
+
+- **URL da aplicação:** https://gerador-planos-de-aula-two.vercel.app/
+
+---
+
 ## 📄 Scripts SQL
 
 Veja os arquivos:
