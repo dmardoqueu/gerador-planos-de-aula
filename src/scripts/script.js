@@ -36,6 +36,7 @@ function formatarRubrica(rubrica) {
             return `<ul>${itensLista}</ul>`;
         }
     } catch (e) {
+        // Se não for JSON, retorna o texto formatado simples
     }
     return `<p>${formatarTexto(rubrica)}</p>`;
 }
