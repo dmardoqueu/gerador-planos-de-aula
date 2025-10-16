@@ -25,6 +25,8 @@ Deno.serve(async (req) => {
       Gere um plano de aula sobre "${tema_aula}" para o "${ano_escolar}".
       Retorne APENAS um objeto JSON com as chaves:
       "introducao_ludica", "objetivo_bncc", "passo_a_passo", "rubrica_avaliacao".
+      A rubrica de avaliação deve ser um texto descritivo simples (não um objeto nem lista).
+      Responda apenas com o JSON puro, sem comentários nem explicações.
     `;
 
     const result = await model.generateContent(prompt);
@@ -37,7 +39,33 @@ Deno.serve(async (req) => {
     }
 
     const planoGerado = JSON.parse(textResponse);
-    console.log("Plano gerado:", planoGerado);
+
+    let rubrica = planoGerado.rubrica_avaliacao;
+
+    if (typeof rubrica === 'object') {
+      if (Array.isArray(rubrica)) {
+        rubrica = (rubrica as { criterio?: string; descricao?: string }[])
+          .map((item: { criterio?: string; descricao?: string }, i: number) =>
+            `${i + 1}. ${item.criterio ?? ''}: ${item.descricao ?? ''}`
+          )
+          .join('\n');
+      } else if ((rubrica as any).criterios_de_avaliacao) {
+        const criterios = (rubrica as { criterios_de_avaliacao: { criterio?: string; descricao?: string }[] }).criterios_de_avaliacao;
+        rubrica = criterios
+          .map((item: { criterio?: string; descricao?: string }, i: number) =>
+            `${i + 1}. ${item.criterio ?? ''}: ${item.descricao ?? ''}`
+          )
+          .join('\n');
+      } else {
+        rubrica = Object.entries(rubrica as Record<string, unknown>)
+          .map(([key, value]: [string, unknown]) => `${key}: ${String(value)}`)
+          .join('\n');
+      }
+    }
+
+    planoGerado.rubrica_avaliacao = rubrica;
+
+    console.log("Plano gerado e rubrica normalizada:", planoGerado);
 
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       global: { headers: { Authorization: req.headers.get('Authorization')! } },

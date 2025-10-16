@@ -18,7 +18,7 @@ body {
 
 main {
     width: 100%;
-    max-width: 600px;
+    max-width: 700px;
     background-color: #2a2a2a;
     padding: 30px;
     border-radius: 8px;
@@ -103,10 +103,15 @@ button:disabled {
     border-top: 1px solid #444;
 }
 
+#result {
+    white-space: pre-line;
+    overflow-wrap: break-word; 
+}
+
 #result h3 {
     color: #ffffff;
-    margin-top: 24px; 
-    margin-bottom: 12px; 
+    margin-top: 24px;
+    margin-bottom: 12px;
     border-bottom: 2px solid #3ecf8e;
     padding-bottom: 6px;
     display: inline-block;
@@ -117,9 +122,20 @@ button:disabled {
 }
 
 #result p {
-    line-height: 1.7; 
+    line-height: 1.7;
     color: #c0c0c0;
-    margin-bottom: 16px; 
+    margin-bottom: 16px;
+}
+
+#result ul {
+    margin-left: 25px;
+    margin-bottom: 16px;
+    list-style-type: disc;
+}
+
+#result li {
+    margin-bottom: 10px;
+    line-height: 1.6;
 }
 
 .passo {
